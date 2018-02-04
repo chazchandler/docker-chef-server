@@ -1,0 +1,36 @@
+version: '2.1'
+
+services:
+  chef-server:
+    build: .
+    image: chaznet/chef-server:12
+    privileged: true
+    restart: always
+    container_name: chef-server
+    hostname: chef-server
+    domainname: dmz.chaznet.local
+    ports:
+      - "172.16.200.78:443:443"
+    volumes:
+      #- var_opt_opscode:/var/opt/opscode
+      #- var_opt_chefbackup:/var/opt/chef-backup
+      #- etc_chef:/etc/opscode
+      - /srv/docker/chef-server/etc-opscode:/etc/opscode
+      - /srv/docker/chef-server/var-opt-opscode:/var/opt/opscode
+      - /srv/docker/chef-server/var-opt-chefbackup:/var/opt/chef-backup
+    environment:
+      #- ORG_NAME=chaznet
+      #- ORG_DESCRIPTION="ChazNet, Inc."
+      - ADMIN_USERNAME=admin
+      - ADMIN_FIRSTNAME=ChazNet
+      - ADMIN_LASTNAME=Admin
+      - ADMIN_EMAIL=admin@chaznet.local
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+
+#volumes:
+#  var_opt_opscode:
+#    driver: local
+#  var_opt_chefbackup:
+#    driver: local
+#  etc_chef:
+#    driver: local
